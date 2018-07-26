@@ -60,7 +60,7 @@ class DownloadPage extends React.Component<any>{
               <h2>
                 Type or paste below the first EOS transaction id containing the file
               </h2>
-
+              <p>Hint: try efec8d264dfce6f8d26f8f8101283308cb9ac78aaf89bc4db35ff5f79bfe3fcf</p>
               <InputGroup
                 large={true}
                 leftIcon="search"
