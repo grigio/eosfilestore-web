@@ -1,0 +1,35 @@
+{
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "rules": {
+    "ordered-imports": false,
+    "member-access": false,
+    "jsx-no-lambda": false,
+    "object-literal-sort-keys": false,
+    "no-debugger": false,
+    "no-console": {
+      "severity": "none",
+      "options": [
+        "debug",
+        "info",
+        "log",
+        "time",
+        "timeEnd",
+        "trace"
+      ]
+    },
+    "semicolon": [
+      false,
+      "never"
+    ],
+    "no-implicit-dependencies": [
+      true,
+      "dev"
+    ]
+  },
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  }
+}

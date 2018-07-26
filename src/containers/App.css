@@ -1,0 +1,70 @@
+@import "~@blueprintjs/core/lib/css/blueprint.css";
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+@import "~flexboxgrid-sass/dist/flexboxgrid.css";
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 200px;
+}
+
+.App-header {
+  background-color: rgb(184, 184, 184);
+  /* height: 150px; */
+  /* padding: 20px; */
+  color: white;
+  display: block;
+  width: 100%;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.App-wrapper {
+  /* width: 1024px; */
+  /* background-color: antiquewhite; */
+  width: 100%;
+}
+
+.App-footer {
+  min-height: 200px;
+  background: grey;
+}
+
+.fill {
+  width: 100%;
+}
+
+.rowspace {
+  /* background: #eee; */
+  margin: 3px 3px;
+  padding: 5px 5px;
+
+}
+
+/* .bp3-navbar {
+  box-shadow: 0em;
+  -webkit-box-shadow: 0em;
+} */
+.pulse-animation {
+  animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    color: rgb(1, 67, 133);
+  }
+  50% {
+    color: rgb(0, 4, 255);
+  }
+  100% {
+    color: rgb(1, 67, 133);
+  }
+}
