@@ -65,6 +65,7 @@ class DownloadPage extends React.Component<any>{
                 large={true}
                 leftIcon="search"
                 onChange={this.onTxidChange}
+                onKeyPress={this.onEnterKey}
                 placeholder="Insert File txid..."
                 // rightElement={maybeSpinner}
                 value={fileStore.newTxid}
@@ -134,6 +135,12 @@ class DownloadPage extends React.Component<any>{
     fileStore.setTxid(ev.target.value)
   }
 
+  private onEnterKey(ev: any) {
+    if (ev.key === "Enter") {
+      fileStore.fetchData()
+    }
+
+  }
 }
 
 export default DownloadPage
