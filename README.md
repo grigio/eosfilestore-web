@@ -1,3 +1,3 @@
-React + Mobx + React Router V4 Boilerplate
+# EOSfilestore Web
 
-..with addition of Blueprintjs
+Browser version of EOSfilestore cli
