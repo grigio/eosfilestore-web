@@ -78,7 +78,7 @@ class DownloadPage extends React.Component<any>{
 
         <div className="loading row rowspace start-xs">
           <div className="col-xs-offset-1 col-xs-9">
-            {fileStore.isLoading || fileStore.blob.length > 0 ? (
+            {fileStore.isLoading ? (
               <div className="mybox box">
                 <h2>
                   Fetching the file transactions
@@ -112,9 +112,21 @@ class DownloadPage extends React.Component<any>{
                     Account: {fileStore.fileMetadata.upload_by}<br />
                     Total CPU: {fileStore.fileMetadata.cpu_usage_us}<br />
                     Total NET: {fileStore.fileMetadata.net_usage_words}<br />
+                    Share <a href={`/download/${fileStore.newTxid}`}>direct link</a> <Icon icon="share" />
                   </div>
 
                 </div>
+
+                <h2>File preview</h2>
+                {fileStore.blob.slice(0, 10) === "data:image" ? (
+                  <div className="previewer row start-xs">
+                    <div className="col-xs start-xs">
+                      <img src={`${fileStore.blob}`} alt="" />
+                    </div>
+                  </div>
+                ) : (
+                  <p>Preview not available. You can try to open the data on a new tab or download it.</p>
+                )}
               </div>
             ) : null}
           </div>
