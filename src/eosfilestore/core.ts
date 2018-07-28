@@ -9,7 +9,7 @@ import { chainId, from, wif, permission } from './costants'
 const config = {
   chainId,
   keyProvider: [wif],
-  httpEndpoint: 'https://api.eosnewyork.io',
+  httpEndpoint: 'https://eu1.eosdac.io:443',
   // TODO: changeable https://api.eosnewyork.io https://nodes.get-scatter.com
   expireInSeconds: 60,
   broadcast: true,
