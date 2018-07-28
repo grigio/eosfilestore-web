@@ -7,6 +7,8 @@ import { Redirect } from 'react-router-dom'
 
 import App from './containers/App';
 import DownloadPage from './containers/DownloadPage'
+import InfoPage from './containers/InfoPage'
+
 import { routingStore, browserHistory, fileStore } from './stores'
 import registerServiceWorker from './registerServiceWorker';
 
@@ -21,14 +23,6 @@ const stores = {
 
 const history = syncHistoryWithStore(browserHistory, routingStore);
 
-// Pages
-const AboutPage = () => (
-  <div>
-    <h2>About</h2>
-    <p>Just a boilerplate to test React + Mobx + React Router V4</p>
-  </div>
-)
-
 ReactDOM.render(
   <Provider {...stores}>
     <Router history={history}>
@@ -36,7 +30,7 @@ ReactDOM.render(
 
         <App>
           <Route path="/download/:txid?" component={DownloadPage} />
-          <Route path="/about" component={AboutPage} />
+          <Route path="/info" component={InfoPage} />
 
           <Route exact={true} path="/" render={() => (
             <Redirect to="/download" />

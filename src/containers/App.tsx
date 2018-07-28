@@ -39,8 +39,21 @@ export class App extends React.Component<any> {
               <NavbarGroup align={Alignment.RIGHT}>
                 <NavbarHeading>EOSfilestore</NavbarHeading>
                 <NavbarDivider />
+                <Link to="/info">
+                  <Button
+                    className={Classes.MINIMAL}
+                    icon="info-sign"
+                    text="Info"
+                    active={location.pathname.startsWith('/info')}
+                  />
+                </Link>
                 <Link to="/download">
-                  <Button className={Classes.MINIMAL} icon="download" text="Download" />
+                  <Button
+                    className={Classes.MINIMAL}
+                    icon="download"
+                    text="Download"
+                    active={location.pathname.startsWith('/download')}
+                  />
                 </Link>
                 <Button disabled={true} className={Classes.MINIMAL} icon="cloud-upload" text="Upload" />
                 <Navbar.Divider />
@@ -60,15 +73,28 @@ export class App extends React.Component<any> {
           </div>
         </div>
 
-        <div className="App-footer row fill">
-          <div className="col-xs-12 col-sm">
-            <div className="box">.</div>
-          </div>
-          <div className="col-xs-12 col-sm">
-            <div className="box">.</div>
-          </div>
-          <div className="col-xs-12 col-sm">
-            <div className="box">.</div>
+        <div className="App-footer row fill center-xs">
+          <div className="footercenter row col-sm-9 start-xs">
+            <div className="col-xs-12 col-sm">
+              <h2>Usage</h2>
+              <p>
+                You need to upload the file via <a href="https://github.com/grigio/eosfilestore-web">EOSfilestore</a> CLI to get the txid
+              </p>
+            </div>
+            <div className="col-xs-12 col-sm">
+              <div className="box">
+                <h2>Source Code</h2>
+                <p>
+                  <a href="https://github.com/grigio/eosfilestore-web">EOSfilestore Web</a> is on Github.
+              </p>
+              </div>
+            </div>
+            <div className="col-xs-12 col-sm">
+              <div className="box">
+                <h2>Support</h2>
+                If you like EOSfilestore you can fund the development with an EOS donation to <strong>@eosfilestore</strong>
+              </div>
+            </div>
           </div>
         </div>
       </div>

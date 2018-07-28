@@ -35,7 +35,7 @@
 
 .App-footer {
   min-height: 200px;
-  background: grey;
+  background: rgb(216, 216, 216);
 }
 
 .fill {
@@ -47,6 +47,10 @@
   margin: 3px 3px;
   padding: 5px 5px;
 
+}
+
+.bp3-navbar-group a:hover {
+  text-decoration-line: none;
 }
 
 /* .bp3-navbar {
