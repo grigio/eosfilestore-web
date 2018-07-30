@@ -21,4 +21,4 @@ If you want to support the development you can donate to `@eosfilestore` on EOS.
 
 ### License
 
-EOSfilestore is (MIT licensed](./LICENSE).
+EOSfilestore is [MIT licensed](./LICENSE).
