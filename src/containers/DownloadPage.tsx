@@ -121,7 +121,7 @@ class DownloadPage extends React.Component<any>{
                 {fileStore.blob.slice(0, 10) === "data:image" ? (
                   <div className="previewer row start-xs">
                     <div className="col-xs start-xs">
-                      <img src={`${fileStore.blob}`} alt="" />
+                      <img style={{width: '100%'}} src={`${fileStore.blob}`} alt="" />
                     </div>
                   </div>
                 ) : (
