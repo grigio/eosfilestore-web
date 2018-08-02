@@ -9,7 +9,7 @@ import App from './containers/App';
 import DownloadPage from './containers/DownloadPage'
 import InfoPage from './containers/InfoPage'
 
-import { routingStore, browserHistory, fileStore } from './stores'
+import { routingStore, browserHistory, fileStore, userStore } from './stores'
 import registerServiceWorker from './registerServiceWorker';
 
 import './index.css';
@@ -17,6 +17,7 @@ import './index.css';
 // Stores
 
 const stores = {
+  userStore,
   fileStore,
   routing: routingStore,
 };

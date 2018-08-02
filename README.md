@@ -8,7 +8,7 @@ Browser version of [EOSfilestore](https://github.com/grigio/eosfilestore#-eosfil
 - [x] Download from txid in url
 - [x] Implemented download from txid 
 - [ ] Share the same eosfilestore node/javascript
-- [ ] Scatter integration
+- [x] Scatter integration
 - [ ] Implement upload
 - [ ] Estimation of CPU and NET before the upload
 - [ ] Responsive mobile

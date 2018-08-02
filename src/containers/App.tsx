@@ -13,14 +13,58 @@ import {
   NavbarHeading,
 } from "@blueprintjs/core";
 
-import './App.css';
-// import logo from './eosfilestore.svg';
+import * as Eos from 'eosjs'
 
-// import { Link } from 'react-router-dom';
 
-@inject('routing', 'fileStore')
+import './App.css'
+import { userStore } from '../stores';
+
+
+@inject('routing', 'fileStore', 'userStore')
 @observer
 export class App extends React.Component<any> {
+  componentDidMount() {
+    document.addEventListener('scatterLoaded', scatterExtension => {
+      if (localStorage.getItem('hasScatter')) {
+        this._scatterInit()
+      }
+    })
+
+  }
+
+  _scatterInit() {
+
+      /* tslint:disable */
+      const scatter = window['scatter'];
+
+      const network = {
+        blockchain: 'eos',
+        host: 'nodes.get-scatter.com',
+        port: 443,
+        protocol: 'https',
+        chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+      };
+
+      scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
+
+        const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
+        console.log(account, Eos)
+        userStore.setAccount(account)
+        localStorage.setItem('hasScatter', "yes")
+
+      }).catch((error: any) => {
+        console.error(error)
+      });
+  }
+  _forget() {
+    const scatter = window['scatter'];
+
+    scatter.forgetIdentity().then(() => {
+      userStore.setAccount(null)
+      localStorage.removeItem('hasScatter')
+    })
+  }
+
   render() {
     return (
       <div className="App row center-xs">
@@ -57,7 +101,19 @@ export class App extends React.Component<any> {
                 </Link>
                 <Button disabled={true} className={Classes.MINIMAL} icon="cloud-upload" text="Upload" />
                 <Navbar.Divider />
-                <Button disabled={true} className={Classes.MINIMAL} icon="log-in" text="Login with Scatter" />
+                {(userStore.account) ? (
+                  <Button className={Classes.MINIMAL}
+                          icon="log-in" 
+                          text={userStore.account.name}
+                          onClick={this._forget}
+                          />
+                ) : (
+                    <Button className={Classes.MINIMAL} 
+                            icon="log-in" 
+                            text="Login with Scatter"
+                            onClick={this._scatterInit}
+                            />
+                  )}
               </NavbarGroup>
             </Navbar>
           </div>
