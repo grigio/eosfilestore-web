@@ -4,7 +4,7 @@
 // const Eos = require('eosjs')
 import * as Eos from 'eosjs'
 // import { splitString } from './utils'
-import { chainId, from, wif, permission } from './costants'
+import { chainId, wif } from './costants'
 
 const config = {
   chainId,
@@ -22,21 +22,30 @@ const eos = Eos(config)
 export function doTx(memo: string): Promise<any> {
   return new Promise((resolve: any) => {
     setTimeout(() => {
-      // eos.transfer(from, 'eosfilestore', '0.0001 EOS', memo, (error: any, result: any) => {
-      //   if (error) {
-      //     console.error(error)
-      //   }
-      //   // console.log('..',JSON.stringify(result))
-      //   resolve(result)
-      // })
 
-      const options = {
-        authorization: [`${from}@${permission}`]
-      }
-      eos.contract('eosfilestore').then((contract: any) => {
-        contract.upload(memo, options).then((res: any) => {
-          resolve(res)
-        })
+      /* tslint:disable */
+      const scatter = window['scatter'];
+
+      const network = {
+        blockchain: 'eos',
+        host: 'nodes.get-scatter.com',
+        port: 443,
+        protocol: 'https',
+        chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+      };
+      scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
+        const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
+        const eos = scatter.eos(network, Eos, { broadcast: true, chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906' }, "http");
+        // const requiredFields = { accounts: [network] };
+        const options = {
+          authorization: [`${account.name}@${account.authority}`]
+        }
+        console.log('aaaacc', account)
+        eos.contract('eosfilestore').then((contract: any) => {
+          contract.upload(memo, options).then((res: any) => {
+            resolve(res)
+          })
+        });
       });
 
     }, 100); // NOTE: rate limit?
@@ -107,3 +116,101 @@ export function prepareChunks(filepath: string): Promise<string[]> {
     // });
   })
 }
+
+
+/*
+
+{
+  "broadcast": true,
+  "transaction": {
+    "compression": "none",
+    "transaction": {
+      "expiration": "2018-08-02T13:28:34",
+      "ref_block_num": 25582,
+      "ref_block_prefix": 3813040338,
+      "net_usage_words": 0,
+      "max_cpu_usage_ms": 0,
+      "delay_sec": 0,
+      "context_free_actions": [],
+      "actions": [
+        {
+          "account": "eosfilestore",
+          "name": "upload",
+          "authorization": [
+            {
+              "actor": "gq4dmnjzgige",
+              "permission": "active"
+            }
+          ],
+          "data": "09646574737461736132"
+        }
+      ],
+      "transaction_extensions": []
+    },
+    "signatures": [
+      "SIG_K1_K6xtddLWTfRZHubGcfcRZDQB21E7Tew46QSKZkQ52guCSvhpVHbNzhuMgNo3BuWabN7K9bViEkHLqWxXito448SXie18iE"
+    ]
+  },
+  "transaction_id": "bc4c0aa870fa922a9d2bdc59fcc90911638c38f9a67fbd05ce04ad54765cccf6",
+  "processed": {
+    "id": "bc4c0aa870fa922a9d2bdc59fcc90911638c38f9a67fbd05ce04ad54765cccf6",
+    "receipt": {
+      "status": "executed",
+      "cpu_usage_us": 450,
+      "net_usage_words": 13
+    },
+    "elapsed": 450,
+    "net_usage": 104,
+    "scheduled": false,
+    "action_traces": [
+      {
+        "receipt": {
+          "receiver": "eosfilestore",
+          "act_digest": "154eec21519da8015f9ffdd82f16a6c35735a8316bee681456d8444483afa648",
+          "global_sequence": 149343810,
+          "recv_sequence": 87,
+          "auth_sequence": [
+            [
+              "gq4dmnjzgige",
+              563
+            ]
+          ],
+          "code_sequence": 1,
+          "abi_sequence": 1
+        },
+        "act": {
+          "account": "eosfilestore",
+          "name": "upload",
+          "authorization": [
+            {
+              "actor": "gq4dmnjzgige",
+              "permission": "active"
+            }
+          ],
+          "data": {
+            "msg": "detstasa2"
+          },
+          "hex_data": "09646574737461736132"
+        },
+        "elapsed": 182,
+        "cpu_usage": 0,
+        "console": "",
+        "total_cpu_usage": 0,
+        "trx_id": "bc4c0aa870fa922a9d2bdc59fcc90911638c38f9a67fbd05ce04ad54765cccf6",
+        "inline_traces": []
+      }
+    ],
+    "except": null
+  },
+  "returnedFields": {
+    "accounts": [
+      {
+        "name": "gq4dmnjzgige",
+        "authority": "active",
+        "blockchain": "eos"
+      }
+    ]
+  }
+}
+
+*/

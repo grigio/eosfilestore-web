@@ -7,6 +7,8 @@ import { Redirect } from 'react-router-dom'
 
 import App from './containers/App';
 import DownloadPage from './containers/DownloadPage'
+import UploadPage from './containers/UploadPage'
+
 import InfoPage from './containers/InfoPage'
 
 import { routingStore, browserHistory, fileStore, userStore } from './stores'
@@ -31,6 +33,7 @@ ReactDOM.render(
 
         <App>
           <Route path="/download/:txid?" component={DownloadPage} />
+          <Route path="/upload" component={UploadPage} />
           <Route path="/info" component={InfoPage} />
 
           <Route exact={true} path="/" render={() => (

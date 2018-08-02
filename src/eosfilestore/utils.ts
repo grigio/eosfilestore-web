@@ -18,3 +18,13 @@ export function b64DecodeUnicode(str: string) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
 }
+
+export function arrayBufferToBase64(buffer:any, mimetype:string) {
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+  }
+  return `data:${mimetype};base64,${window.btoa(binary)}`;
+}

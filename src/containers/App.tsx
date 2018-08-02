@@ -13,7 +13,7 @@ import {
   NavbarHeading,
 } from "@blueprintjs/core";
 
-import * as Eos from 'eosjs'
+// import * as Eos from 'eosjs'
 
 
 import './App.css'
@@ -34,27 +34,27 @@ export class App extends React.Component<any> {
 
   _scatterInit() {
 
-      /* tslint:disable */
-      const scatter = window['scatter'];
+    /* tslint:disable */
+    const scatter = window['scatter'];
 
-      const network = {
-        blockchain: 'eos',
-        host: 'nodes.get-scatter.com',
-        port: 443,
-        protocol: 'https',
-        chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-      };
+    const network = {
+      blockchain: 'eos',
+      host: 'nodes.get-scatter.com',
+      port: 443,
+      protocol: 'https',
+      chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
+    };
 
-      scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
+    scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
 
-        const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
-        console.log(account, Eos)
-        userStore.setAccount(account)
-        localStorage.setItem('hasScatter', "yes")
+      const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
+      // console.log(account, Eos)
+      userStore.setAccount(account)
+      localStorage.setItem('hasScatter', "yes")
 
-      }).catch((error: any) => {
-        console.error(error)
-      });
+    }).catch((error: any) => {
+      console.error(error)
+    });
   }
   _forget() {
     const scatter = window['scatter'];
@@ -99,20 +99,25 @@ export class App extends React.Component<any> {
                     active={location.pathname.startsWith('/download')}
                   />
                 </Link>
-                <Button disabled={true} className={Classes.MINIMAL} icon="cloud-upload" text="Upload" />
+                <Link to="/upload">
+                  <Button className={Classes.MINIMAL}
+                    icon="cloud-upload"
+                    text="Upload"
+                  />
+                </Link>
                 <Navbar.Divider />
                 {(userStore.account) ? (
                   <Button className={Classes.MINIMAL}
-                          icon="log-in" 
-                          text={userStore.account.name}
-                          onClick={this._forget}
-                          />
+                    icon="log-in"
+                    text={userStore.account.name}
+                    onClick={this._forget}
+                  />
                 ) : (
-                    <Button className={Classes.MINIMAL} 
-                            icon="log-in" 
-                            text="Login with Scatter"
-                            onClick={this._scatterInit}
-                            />
+                    <Button className={Classes.MINIMAL}
+                      icon="log-in"
+                      text="Login with Scatter"
+                      onClick={this._scatterInit}
+                    />
                   )}
               </NavbarGroup>
             </Navbar>
