@@ -11,7 +11,7 @@ import UploadPage from './containers/UploadPage'
 
 import InfoPage from './containers/InfoPage'
 
-import { routingStore, browserHistory, fileStore, userStore } from './stores'
+import { routingStore, browserHistory, fileStore, userStore, notificationStore } from './stores'
 import registerServiceWorker from './registerServiceWorker';
 
 import './index.css';
@@ -21,6 +21,7 @@ import './index.css';
 const stores = {
   userStore,
   fileStore,
+  notificationStore,
   routing: routingStore,
 };
 

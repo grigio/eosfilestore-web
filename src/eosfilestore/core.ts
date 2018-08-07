@@ -4,13 +4,13 @@
 // const Eos = require('eosjs')
 import * as Eos from 'eosjs'
 // import { splitString } from './utils'
-import { chainId, wif } from './costants'
+import { wif } from './costants'
 
 const config = {
-  chainId,
+  chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
   keyProvider: [wif],
-  httpEndpoint: 'https://eu1.eosdac.io:443',
-  // TODO: changeable https://api.eosnewyork.io https://nodes.get-scatter.com
+  httpEndpoint: 'https://api1.eosasia.one',
+  // TODO: changeable https://api.eosnewyork.io https://nodes.get-scatter.com https://api1.eosasia.one
   expireInSeconds: 60,
   broadcast: true,
   verbose: false, // API activity
@@ -19,7 +19,8 @@ const config = {
 
 const eos = Eos(config)
 
-export function doTx(memo: string): Promise<any> {
+// NOTE: https://github.com/GetScatter/ScatterWebExtension/issues/60#issuecomment-399634757
+export function doTx(memo: string, account: any): Promise<any> {
   return new Promise((resolve: any) => {
     setTimeout(() => {
 
@@ -35,13 +36,16 @@ export function doTx(memo: string): Promise<any> {
       };
       scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
         const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
-        const eos = scatter.eos(network, Eos, { broadcast: true, chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906' }, "http");
+        const eoss = scatter.eos(network, Eos, { broadcast: true, chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906' }, "http");
         // const requiredFields = { accounts: [network] };
+        // const options = {
+        //   authorization: [`${account.name}@${account.authority}`]
+        // }
         const options = {
           authorization: [`${account.name}@${account.authority}`]
         }
         console.log('aaaacc', account)
-        eos.contract('eosfilestore').then((contract: any) => {
+        eoss.contract('eosfilestore').then((contract: any) => {
           contract.upload(memo, options).then((res: any) => {
             resolve(res)
           })

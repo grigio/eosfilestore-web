@@ -11,16 +11,18 @@ import {
   NavbarDivider,
   NavbarGroup,
   NavbarHeading,
+  Callout,
+  Intent,
 } from "@blueprintjs/core";
 
 // import * as Eos from 'eosjs'
 
 
 import './App.css'
-import { userStore } from '../stores';
+import { userStore, notificationStore } from '../stores';
 
 
-@inject('routing', 'fileStore', 'userStore')
+@inject('routing', 'fileStore', 'userStore', 'notificationStore')
 @observer
 export class App extends React.Component<any> {
   componentDidMount() {
@@ -50,10 +52,14 @@ export class App extends React.Component<any> {
       const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
       // console.log(account, Eos)
       userStore.setAccount(account)
+      notificationStore.clear()
       localStorage.setItem('hasScatter', "yes")
 
     }).catch((error: any) => {
-      console.error(error)
+      notificationStore.push({
+        message: error.type === 'locked' ? 'The Scatter wallet is locked. Please unlock it and try again.' : error.message 
+      })
+      // console.error('ERROR: ', error)
     });
   }
   _forget() {
@@ -103,6 +109,7 @@ export class App extends React.Component<any> {
                   <Button className={Classes.MINIMAL}
                     icon="cloud-upload"
                     text="Upload"
+                    active={location.pathname.startsWith('/upload')}
                   />
                 </Link>
                 <Navbar.Divider />
@@ -125,6 +132,21 @@ export class App extends React.Component<any> {
         </div> {/* /App-wrapper */}
 
 
+        <div className="Notifications row center-xs fill">
+          <div className="col-xs-10">
+            <div className="box">
+              {notificationStore.notifications.map((e, i) => (
+                <Callout key={i}
+                  intent={Intent.WARNING}
+                  icon="warning-sign"
+                  title={e.title}
+                  id={i.toString()}>
+                    {e.message}
+                </Callout>
+              ))}
+            </div>
+          </div>
+        </div>
 
         <div className="row center-xs fill">
           <div className="col-xs-10">

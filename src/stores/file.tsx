@@ -1,5 +1,6 @@
 import { observable, action } from 'mobx'
 import { fetchTx } from '../eosfilestore/core'
+import { notificationStore } from '.';
 
 // interface
 
@@ -42,6 +43,8 @@ class FileStore {
     }).catch(e => {
       this.isLoading = false
       this.isErrorState = true
+      notificationStore.push({message: 'Error fetching tx via API'})
+      console.error('ERROR: ', e)
     })
   }
 

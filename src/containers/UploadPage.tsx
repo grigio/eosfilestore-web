@@ -1,17 +1,19 @@
 import * as React from 'react';
 // import * as ReactDOM from 'react-dom';
-import { Button, InputGroup, ProgressBar, Intent, Icon, FileInput } from "@blueprintjs/core";
-import { observer } from 'mobx-react';
-import { fileStore } from '../stores';
-import { arrayBufferToBase64, splitString, createPayload} from '../eosfilestore/utils'
-import { doTx } from '../eosfilestore/core' 
+import { ProgressBar, Icon, FileInput, Callout, Intent } from "@blueprintjs/core";
+import { observer, inject } from 'mobx-react';
+import { fileStore, notificationStore } from '../stores';
+import { arrayBufferToBase64, splitString, createPayload } from '../eosfilestore/utils'
+import { doTx } from '../eosfilestore/core'
+import { userStore } from '../stores';
+
 // import { counterStore, routingStore } from '../stores'
 
 // gif b5407140a0f7b6365b2dcf1731f6ad50ee0502d052ecdb9da01700ecd398f759
 // a jpg 90edc50fac5a622820404e24f6839c7b9ca2bff73a3b1a11221caf85334aa6e6
 // sh 987c4c9995e717df08ce82f4b24a2f814749f92113e7458124f29607cad0b77d
 // welcome txt 9a9e4d3637cbecea36d7cf54d0cf8a7e8046f0b893a1d880800ec8312c7d9eb4
-
+@inject('userStore')
 @observer
 class UploadPage extends React.Component<any>{
   componentDidMount() {
@@ -25,34 +27,7 @@ class UploadPage extends React.Component<any>{
 
   render() {
 
-    const downloadButton: any = (
-      <Button
-        disabled={fileStore.newTxid.length > 0 ? false : true}
-        icon="arrow-right"
-        minimal={true}
-        intent={Intent.PRIMARY}
-        onClick={() => {
-          fileStore.fetchData()
-        }} />
-    )
 
-    const cleanButton: any = (
-      <Button
-        disabled={fileStore.newTxid.length > 0 ? false : true}
-        icon="cross"
-        minimal={true}
-        onClick={() => {
-          // fileStore.fetchData()
-          fileStore.cleanTxid()
-        }} />
-    )
-
-    const buttonGroup: any = (
-      <>
-        {cleanButton}
-        {downloadButton}
-      </>
-    )
 
     return (
       <>
@@ -67,13 +42,14 @@ class UploadPage extends React.Component<any>{
                 text="Choose file..."
                 onInputChange={(event: any) => {
                   // const type = event.target.files[0].type
+                  notificationStore.push({ title: 'Scatter is opening..', message: 'You need to confirm all the windows to successfully upload the file.' })
                   const file = event.target.files[0];
-                  console.log(file  , event)
+                  console.log(file, event)
                   const fr = new FileReader();
                   fr.onloadend = async (data) => {
                     if (data.target) {
                       const fileB64 = arrayBufferToBase64(data.target.result, file.type)
-// senza type
+                      // senza type
                       console.log(fileB64) // split and send
                       const chunks = splitString(fileB64, 1950)
                       let nextTx: string | null = null
@@ -82,10 +58,10 @@ class UploadPage extends React.Component<any>{
 
                         try {
                           const memo = createPayload(chunk, nextTx)
-                          const doneTx: any = await doTx(memo)
+                          const doneTx: any = await doTx(memo, userStore.account)
                           const cpu = doneTx.processed.receipt.cpu_usage_us
                           const net = doneTx.processed.receipt.net_usage_words
-                  
+
                           // NOTE: needed for better cli formatting
                           console.log(`${counter}. ${nextTx}
                      ${doneTx.transaction_id} cpu: ${cpu} net:${net}`)
@@ -95,7 +71,10 @@ class UploadPage extends React.Component<any>{
                           console.log(`eosfilestore ERROR: ${JSON.stringify(err, null, 2)}`)
                           return
                         }
-                  
+
+                      }
+                      if (nextTx) {
+                        fileStore.setTxid(nextTx)
                       }
                       console.log(`Done, uploaded in ${nextTx}`)
 
@@ -111,17 +90,16 @@ class UploadPage extends React.Component<any>{
                   }
                   fr.readAsArrayBuffer(file);
                 }} />
-              <InputGroup
-                large={true}
-                leftIcon="search"
-                onChange={this.onTxidChange}
-                onKeyPress={this.onEnterKey}
-                placeholder="Insert File txid..."
-                // rightElement={maybeSpinner}
-                value={fileStore.newTxid}
-                rightElement={buttonGroup}
-                intent={fileStore.isErrorState ? Intent.DANGER : Intent.NONE}
-              />
+              {fileStore.newTxid ? (
+                <Callout
+                  intent={Intent.SUCCESS}
+                  icon="tick"
+                  title={"Congrats! Your file has been uploaded on EOS blockchain"}
+                  >
+                  Save the `txid` below as receipt proof or to download the file again <br />
+                  {fileStore.newTxid}
+                </Callout>
+              ) : null}
             </div>
           </div>
         </div>
@@ -193,16 +171,7 @@ class UploadPage extends React.Component<any>{
     )
   }
 
-  private onTxidChange(ev: any) {
-    fileStore.setTxid(ev.target.value)
-  }
 
-  private onEnterKey(ev: any) {
-    if (ev.key === "Enter") {
-      fileStore.fetchData()
-    }
-
-  }
 }
 
 export default UploadPage
