@@ -47,6 +47,11 @@ export class App extends React.Component<any> {
       chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
     };
 
+    if (! scatter) {
+      notificationStore.push({message: 'You need to install Scatter EOS wallet extension to login and upload files. More info at https://get-scatter.com'})
+      return
+    }
+
     scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
 
       const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');

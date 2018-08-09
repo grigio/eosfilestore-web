@@ -42,6 +42,14 @@ class UploadPage extends React.Component<any>{
                 text="Choose file..."
                 onInputChange={(event: any) => {
                   // const type = event.target.files[0].type
+                  
+                  /* tslint:disable */
+                  const scatter = window['scatter'];
+                  if (!scatter) {
+                    notificationStore.push({ message: 'You need to install Scatter EOS wallet extension to login and upload files. More info at https://get-scatter.com' })
+                    return
+                  }
+
                   notificationStore.push({ title: 'Scatter is opening..', message: 'You need to confirm all the windows to successfully upload the file.' })
                   const file = event.target.files[0];
                   console.log(file, event)
@@ -95,7 +103,7 @@ class UploadPage extends React.Component<any>{
                   intent={Intent.SUCCESS}
                   icon="tick"
                   title={"Congrats! Your file has been uploaded on EOS blockchain"}
-                  >
+                >
                   Save the `txid` below as receipt proof or to download the file again <br />
                   {fileStore.newTxid}
                 </Callout>
