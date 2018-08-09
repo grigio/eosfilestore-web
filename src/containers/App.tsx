@@ -87,7 +87,7 @@ export class App extends React.Component<any> {
           <div className="col-xs-10">
             <Navbar>
               <NavbarGroup align={Alignment.RIGHT}>
-                <NavbarHeading>EOSfilestore</NavbarHeading>
+                <NavbarHeading>EOSfilestore dApp</NavbarHeading>
                 <NavbarDivider />
                 <Link to="/info">
                   <Button
@@ -148,7 +148,7 @@ export class App extends React.Component<any> {
           </div>
         </div>
 
-        <div className="row center-xs fill">
+        <div className="row center-xs fill" style={{minHeight: 400}}>
           <div className="col-xs-10">
             <div className="box">
               {this.props.children}
@@ -160,9 +160,17 @@ export class App extends React.Component<any> {
           <div className="footercenter row col-sm-9 start-xs">
             <div className="col-xs-12 col-sm">
               <h2>Usage</h2>
-              <p>
-                You need to upload the file via <a href="https://github.com/grigio/eosfilestore-web">EOSfilestore</a> CLI to get the txid
-              </p>
+              <ul>
+                <li>
+                  <a href="https://github.com/grigio/eosfilestore-web">github</a>
+                </li>
+                <li>
+                  <a href="https://eosindex.io/projects/205-eosfilestore">eosindex</a>
+                </li>
+                <li>
+                  <a href="https://www.producthunt.com/posts/eosfilestore">product hunt</a> 
+                </li>
+              </ul>
             </div>
             <div className="col-xs-12 col-sm">
               <div className="box">
