@@ -6,6 +6,10 @@ import * as Eos from 'eosjs'
 // import { splitString } from './utils'
 import { wif } from './costants'
 
+/* tslint:disable */
+const ScatterJS = require('scatter-js/dist/scatter.esm')
+const { scatter } = ScatterJS.default
+
 const config = {
   chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
   keyProvider: [wif],
@@ -24,9 +28,6 @@ export function doTx(memo: string, account: any): Promise<any> {
   return new Promise((resolve: any) => {
     setTimeout(() => {
 
-      /* tslint:disable */
-      const scatter = window['scatter'];
-
       const network = {
         blockchain: 'eos',
         host: 'nodes.get-scatter.com',
@@ -34,23 +35,34 @@ export function doTx(memo: string, account: any): Promise<any> {
         protocol: 'https',
         chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
       };
-      scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
-        const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
-        const eoss = scatter.eos(network, Eos, { broadcast: true, chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906' }, "http");
-        // const requiredFields = { accounts: [network] };
-        // const options = {
-        //   authorization: [`${account.name}@${account.authority}`]
-        // }
-        const options = {
-          authorization: [`${account.name}@${account.authority}`]
+
+
+      scatter.connect("eosfilestore").then((connected: any) => {
+        if (!connected) {
+          // User does not have Scatter Desktop or Classic installed. 
+          // return false;
+          console.error('Scatter not active')
         }
-        console.log('aaaacc', account)
-        eoss.contract('eosfilestore').then((contract: any) => {
-          contract.upload(memo, options).then((res: any) => {
-            resolve(res)
-          })
+
+        scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
+          const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
+          const eoss = scatter.eos(network, Eos, { broadcast: true, chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906' }, "http");
+          // const requiredFields = { accounts: [network] };
+          // const options = {
+          //   authorization: [`${account.name}@${account.authority}`]
+          // }
+          const options = {
+            authorization: [`${account.name}@${account.authority}`]
+          }
+          console.log('aaaacc', account)
+          eoss.contract('eosfilestore').then((contract: any) => {
+            contract.upload(memo, options).then((res: any) => {
+              resolve(res)
+            })
+          });
         });
-      });
+
+      })
 
     }, 100); // NOTE: rate limit?
   })

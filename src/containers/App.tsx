@@ -3,6 +3,11 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom'
 
+/* tslint:disable */
+const ScatterJS = require('scatter-js/dist/scatter.esm')
+const { scatter } = ScatterJS.default
+// console.log('ss', ScatterJS)
+
 import {
   Alignment,
   Button,
@@ -28,6 +33,7 @@ export class App extends React.Component<any> {
   componentDidMount() {
     document.addEventListener('scatterLoaded', scatterExtension => {
       if (localStorage.getItem('hasScatter')) {
+        notificationStore.push({message: 'Trying to open Scatte..'})
         this._scatterInit()
       }
     })
@@ -37,7 +43,7 @@ export class App extends React.Component<any> {
   _scatterInit() {
 
     /* tslint:disable */
-    const scatter = window['scatter'];
+    // const scatter = window['scatter'];
 
     const network = {
       blockchain: 'eos',
@@ -46,26 +52,36 @@ export class App extends React.Component<any> {
       protocol: 'https',
       chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
     };
+    
+    notificationStore.push({message: 'Trying to open Scatter..'})
 
-    if (! scatter) {
-      notificationStore.push({message: 'You need to install Scatter EOS wallet extension to login and upload files. More info at https://get-scatter.com'})
-      return
-    }
+    scatter.connect("eosfilestore").then((connected: any) => {
+      if (!connected) {
+        notificationStore.push({ message: 'You need to install Scatter EOS Desktop wallet to login and upload files. More info at https://get-scatter.com' })
+      }
 
-    scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
+      // Use `scatter` normally now.
+      try {
+        scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
 
-      const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
-      // console.log(account, Eos)
-      userStore.setAccount(account)
-      notificationStore.clear()
-      localStorage.setItem('hasScatter', "yes")
+          const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
+          // console.log(account, Eos)
+          userStore.setAccount(account)
+          notificationStore.clear()
+          localStorage.setItem('hasScatter', "yes")
 
-    }).catch((error: any) => {
-      notificationStore.push({
-        message: error.type === 'locked' ? 'The Scatter wallet is locked. Please unlock it and try again.' : error.message 
-      })
-      // console.error('ERROR: ', error)
+        }).catch((error: any) => {
+          notificationStore.push({
+            message: error.type === 'locked' ? 'The Scatter wallet is locked. Please unlock it and try again.' : error.message
+          })
+          // console.error('ERROR: ', error)
+        });
+
+      } catch {
+        notificationStore.push({ message: 'You need Scatter EOS desktop wallet enabled' })
+      }
     });
+
   }
   _forget() {
     const scatter = window['scatter'];
@@ -146,14 +162,14 @@ export class App extends React.Component<any> {
                   icon="warning-sign"
                   title={e.title}
                   id={i.toString()}>
-                    {e.message}
+                  {e.message}
                 </Callout>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="row center-xs fill" style={{minHeight: 400}}>
+        <div className="row center-xs fill" style={{ minHeight: 400 }}>
           <div className="col-xs-10">
             <div className="box">
               {this.props.children}
@@ -173,7 +189,7 @@ export class App extends React.Component<any> {
                   <a href="https://eosindex.io/projects/205-eosfilestore">eosindex</a>
                 </li>
                 <li>
-                  <a href="https://www.producthunt.com/posts/eosfilestore">product hunt</a> 
+                  <a href="https://www.producthunt.com/posts/eosfilestore">product hunt</a>
                 </li>
               </ul>
             </div>

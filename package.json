@@ -16,7 +16,7 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "2.16.0",
-    "scatter-js": "^1.0.1"
+    "scatter-js": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",

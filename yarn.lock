@@ -2766,7 +2766,7 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-"ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
+ethereumjs-abi@^0.6.5, "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
   version "0.6.5"
   resolved "git+https://github.com/ethereumjs/ethereumjs-abi.git#00ba8463a7f7a67fcad737ff9c2ebd95643427f7"
   dependencies:
@@ -6941,12 +6941,13 @@ sax@^1.2.4, sax@~1.2.1:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
-scatter-js@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/scatter-js/-/scatter-js-1.0.1.tgz#e224c6630327ec2271d3fa4b099b246147184d26"
+scatter-js@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/scatter-js/-/scatter-js-2.1.0.tgz#07df6bee6a7f5ee09f45f1e6b3b252f3dcf25bb1"
   dependencies:
     eosjs "^16.0.0"
     es6-promise "^4.2.4"
+    ethereumjs-abi "^0.6.5"
     ethereumjs-util "^5.2.0"
     get-random-values "^1.2.0"
     isomorphic-fetch "^2.2.1"
