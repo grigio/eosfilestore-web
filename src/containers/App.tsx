@@ -4,9 +4,7 @@ import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom'
 
 /* tslint:disable */
-const ScatterJS = require('scatter-js/dist/scatter.esm')
-const { scatter } = ScatterJS.default
-// console.log('ss', ScatterJS)
+const ScatterJS = require('scatter-js/dist/scatter.cjs')
 
 import {
   Alignment,
@@ -33,17 +31,13 @@ export class App extends React.Component<any> {
   componentDidMount() {
     document.addEventListener('scatterLoaded', scatterExtension => {
       if (localStorage.getItem('hasScatter')) {
-        notificationStore.push({message: 'Trying to open Scatte..'})
+        notificationStore.push({ message: 'Trying to open Scatte..' })
         this._scatterInit()
       }
     })
-
   }
 
   _scatterInit() {
-
-    /* tslint:disable */
-    // const scatter = window['scatter'];
 
     const network = {
       blockchain: 'eos',
@@ -52,17 +46,17 @@ export class App extends React.Component<any> {
       protocol: 'https',
       chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
     };
-    
-    notificationStore.push({message: 'Trying to open Scatter..'})
 
-    scatter.connect("eosfilestore").then((connected: any) => {
+    notificationStore.push({ message: 'Trying to open Scatter..' })
+
+    ScatterJS.scatter.connect("eosfilestore").then((connected: any) => {
       if (!connected) {
         notificationStore.push({ message: 'You need to install Scatter EOS Desktop wallet to login and upload files. More info at https://get-scatter.com' })
       }
 
       // Use `scatter` normally now.
       try {
-        scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
+        ScatterJS.scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
 
           const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
           // console.log(account, Eos)
@@ -84,9 +78,7 @@ export class App extends React.Component<any> {
 
   }
   _forget() {
-    const scatter = window['scatter'];
-
-    scatter.forgetIdentity().then(() => {
+    ScatterJS.scatter.forgetIdentity().then(() => {
       userStore.setAccount(null)
       localStorage.removeItem('hasScatter')
     })
@@ -144,7 +136,7 @@ export class App extends React.Component<any> {
                     <Button className={Classes.MINIMAL}
                       icon="log-in"
                       text="Login with Scatter"
-                      onClick={this._scatterInit}
+                      onClick={() => { this._scatterInit() }}
                     />
                   )}
               </NavbarGroup>

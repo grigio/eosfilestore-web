@@ -7,8 +7,7 @@ import * as Eos from 'eosjs'
 import { wif } from './costants'
 
 /* tslint:disable */
-const ScatterJS = require('scatter-js/dist/scatter.esm')
-const { scatter } = ScatterJS.default
+const ScatterJS = require('scatter-js/dist/scatter.cjs')
 
 const config = {
   chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
@@ -37,16 +36,16 @@ export function doTx(memo: string, account: any): Promise<any> {
       };
 
 
-      scatter.connect("eosfilestore").then((connected: any) => {
+      ScatterJS.scatter.connect("eosfilestore").then((connected: any) => {
         if (!connected) {
           // User does not have Scatter Desktop or Classic installed. 
           // return false;
           console.error('Scatter not active')
         }
 
-        scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
+        ScatterJS.scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
           const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
-          const eoss = scatter.eos(network, Eos, { broadcast: true, chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906' }, "http");
+          const eoss = ScatterJS.scatter.eos(network, Eos, { broadcast: true, chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906' }, "http");
           // const requiredFields = { accounts: [network] };
           // const options = {
           //   authorization: [`${account.name}@${account.authority}`]
