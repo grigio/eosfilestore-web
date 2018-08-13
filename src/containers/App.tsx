@@ -169,6 +169,20 @@ export class App extends React.Component<any> {
           </div>
         </div>
 
+        <div className="App-partners row fill center-xs" style={{ margin: 30 }}>
+          <div className="footercenter row col-sm-9 ">
+            <div className="col-xs-12 col-sm">
+              <h2>Sponsors and partners</h2>
+              <p>
+                <a href="https://eosnation.io">
+                  <img style={{ width: 200 }} src="/assets/sponsors/eosnation.png" alt="EOS Nation" />
+                </a>
+              </p>
+            </div>
+
+          </div>
+        </div>
+
         <div className="App-footer row fill center-xs">
           <div className="footercenter row col-sm-9 start-xs">
             <div className="col-xs-12 col-sm">
@@ -201,6 +215,7 @@ export class App extends React.Component<any> {
             </div>
           </div>
         </div>
+
       </div>
     );
   }
