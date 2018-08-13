@@ -60,7 +60,7 @@ class DownloadPage extends React.Component<any>{
               <h2>
                 Type or paste below the first EOS transaction id containing the file
               </h2>
-              <p>Hint: try efec8d264dfce6f8d26f8f8101283308cb9ac78aaf89bc4db35ff5f79bfe3fcf</p>
+              <p>Hint: try 16d1fd7fc2d3ccc4a2141ba71ce32a96a30f848838bb6879ca2967905e97d7ca</p>
               <InputGroup
                 large={true}
                 leftIcon="search"
@@ -118,15 +118,25 @@ class DownloadPage extends React.Component<any>{
                 </div>
 
                 <h2>File preview</h2>
+                <p>
+                  The preview supports only images and videos
+                </p>
+                {fileStore.blob.slice(0, 10) === "data:video" ? (
+                  <div className="previewer row start-xs">
+                    <div className="col-xs start-xs">
+                      <video style={{ width: '100%' }} src={`${fileStore.blob}`} controls={true} />
+                    </div>
+                  </div>
+                ) : null}
+
                 {fileStore.blob.slice(0, 10) === "data:image" ? (
                   <div className="previewer row start-xs">
                     <div className="col-xs start-xs">
-                      <img style={{width: '100%'}} src={`${fileStore.blob}`} alt="" />
+                      <img style={{ width: '100%' }} src={`${fileStore.blob}`} alt="" />
                     </div>
                   </div>
-                ) : (
-                  <p>Preview not available. You can try to open the data on a new tab or download it.</p>
-                )}
+                ) : null}
+
               </div>
             ) : null}
           </div>
