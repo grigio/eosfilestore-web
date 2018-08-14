@@ -106,7 +106,7 @@ export class App extends React.Component<any> {
                   <Button
                     className={Classes.MINIMAL}
                     icon="info-sign"
-                    text="Info"
+                    text="Info & FAQ"
                     active={location.pathname.startsWith('/info')}
                   />
                 </Link>

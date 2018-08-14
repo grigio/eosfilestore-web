@@ -37,6 +37,9 @@ class UploadPage extends React.Component<any>{
               <h2>
                 Select the file to upload
               </h2>
+              <p>
+                Please read <strong>Info & FAQ</strong> before the usage, and try it first with a small file of a few Kb.
+              </p>
               <FileInput
                 large={true}
                 text="Choose file..."
