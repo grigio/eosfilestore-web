@@ -178,6 +178,11 @@ export class App extends React.Component<any> {
                   <img style={{ width: 200 }} src="/assets/sponsors/eosnation.png" alt="EOS Nation" />
                 </a>
               </p>
+              <p>
+                <a href="https://eosimpera.io">
+                  <img style={{ width: 180 }} src="/assets/sponsors/eosimpera.png" alt="EOS Impera" />
+                </a>
+              </p>
             </div>
 
           </div>
