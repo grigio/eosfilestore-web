@@ -170,19 +170,19 @@ export class App extends React.Component<any> {
         </div>
 
         <div className="App-partners row fill center-xs" style={{ margin: 30 }}>
-          <div className="footercenter row col-sm-9 ">
-            <div className="col-xs-12 col-sm">
+          <div className="footercenter row col-lg-9 middle-xs">
+            <div className="col-xs-3 col-sm">
               <h2>Sponsors and partners</h2>
-              <p>
-                <a href="https://eosnation.io">
-                  <img style={{ width: 200 }} src="/assets/sponsors/eosnation.png" alt="EOS Nation" />
-                </a>
-              </p>
-              <p>
-                <a href="https://eosimpera.io">
-                  <img style={{ width: 180 }} src="/assets/sponsors/eosimpera.png" alt="EOS Impera" />
-                </a>
-              </p>
+            </div>
+            <div className="col-xs-3 col-sm">
+              <a href="https://eosnation.io">
+                <img style={{ width: 200 }} src="/assets/sponsors/eosnation.png" alt="EOS Nation" />
+              </a>
+            </div>
+            <div className="col-xs-3 col-sm">
+              <a href="https://eosimpera.io">
+                <img style={{ width: 200 }} src="/assets/sponsors/eosimpera.png" alt="EOS Impera" />
+              </a>
             </div>
 
           </div>
