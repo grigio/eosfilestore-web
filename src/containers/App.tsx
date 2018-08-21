@@ -23,6 +23,7 @@ import {
 
 import './App.css'
 import { userStore, notificationStore } from '../stores';
+import { networkConfig } from '../eosfilestore/costants';
 
 
 @inject('routing', 'fileStore', 'userStore', 'notificationStore')
@@ -39,16 +40,9 @@ export class App extends React.Component<any> {
 
   _scatterInit() {
 
-    const network = {
-      blockchain: 'eos',
-      host: 'nodes.get-scatter.com',
-      port: 443,
-      protocol: 'https',
-      chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-    };
-
     notificationStore.push({ message: 'Trying to open Scatter..' })
 
+    // NOTE: move this to a scatterStore?
     ScatterJS.scatter.connect("eosfilestore").then((connected: any) => {
       if (!connected) {
         notificationStore.push({ message: 'You need to install Scatter EOS Desktop wallet to login and upload files. More info at https://get-scatter.com' })
@@ -56,7 +50,7 @@ export class App extends React.Component<any> {
 
       // Use `scatter` normally now.
       try {
-        ScatterJS.scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
+        ScatterJS.scatter.getIdentity({ accounts: [networkConfig] }).then((identity: any) => {
 
           const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
           // console.log(account, Eos)
