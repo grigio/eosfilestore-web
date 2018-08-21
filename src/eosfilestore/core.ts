@@ -4,77 +4,51 @@
 // const Eos = require('eosjs')
 import * as Eos from 'eosjs'
 // import { splitString } from './utils'
-import { wif } from './costants'
+import { networkConfig } from './costants'
 
+const contractName = 'eosfilestore'
 /* tslint:disable */
 const ScatterJS = require('scatter-js/dist/scatter.cjs')
 
-const config = {
-  chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
-  keyProvider: [wif],
-  httpEndpoint: 'https://api1.eosasia.one',
-  // TODO: changeable https://api.eosnewyork.io https://nodes.get-scatter.com https://api1.eosasia.one
-  expireInSeconds: 60,
-  broadcast: true,
-  verbose: false, // API activity
-  sign: true
-}
+const eos = Eos(networkConfig)
 
-const eos = Eos(config)
-
-// NOTE: https://github.com/GetScatter/ScatterWebExtension/issues/60#issuecomment-399634757
-export function doTx(memo: string, account: any): Promise<any> {
+function contractReady(contractName: string): any {
   return new Promise((resolve: any) => {
-    setTimeout(() => {
+    ScatterJS.scatter.connect(contractName).then((connected: any) => {
+      if (!connected) {
+        console.error('Scatter not active')
+      }
 
-      const network = {
-        blockchain: 'eos',
-        host: 'nodes.get-scatter.com',
-        port: 443,
-        protocol: 'https',
-        chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-      };
+      ScatterJS.scatter.getIdentity({ accounts: [networkConfig] }).then((identity: any) => {
+        const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos')
+        const eoss = ScatterJS.scatter.eos(networkConfig, Eos, { broadcast: true, chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906' }, "http");
+        // const eoss = ScatterJS.scatter.eos(networkConfig, Eos)
 
-
-      ScatterJS.scatter.connect("eosfilestore").then((connected: any) => {
-        if (!connected) {
-          // User does not have Scatter Desktop or Classic installed. 
-          // return false;
-          console.error('Scatter not active')
-        }
-
-        ScatterJS.scatter.getIdentity({ accounts: [network] }).then((identity: any) => {
-          const account = identity.accounts.find((acc: any) => acc.blockchain === 'eos');
-          const eoss = ScatterJS.scatter.eos(network, Eos, { broadcast: true, chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906' }, "http");
-          // const requiredFields = { accounts: [network] };
-          // const options = {
-          //   authorization: [`${account.name}@${account.authority}`]
-          // }
-          const options = {
-            authorization: [`${account.name}@${account.authority}`]
-          }
-          console.log('aaaacc', account)
-          eoss.contract('eosfilestore').then((contract: any) => {
-            contract.upload(memo, options).then((res: any) => {
-              resolve(res)
-            })
-          });
-        });
-
+        eoss.contract(contractName).then((contract: any) => {
+          // contract.upload(memo, options).then((res: any) => {
+          resolve({ contract, account })
+          // })
+        })
       })
 
-    }, 100); // NOTE: rate limit?
+    })
   })
 }
 
-// just to test promises
-// async function fakeTransferPromise(memo: string): Promise<any> {
-//   return new Promise((resolve: any) => {
-//     setTimeout(async () => {
-//       await resolve({ transaction_id: Math.random().toString() })
-//     }, 2000);
-//   })
-// }
+
+export function doTx(memo: string, account: any): Promise<any> {
+  return new Promise((resolve: any) => {
+    contractReady(contractName).then(({ contract, account }: any) => {
+      const options = {
+        authorization: [`${account.name}@${account.authority}`]
+      }
+
+      contract.upload(memo, options).then((res: any) => {
+        resolve(res)
+      })
+    })
+  })
+}
 
 export function fetchTx(txid: string, buffer?: string, fm?: any): Promise<any> {
   return new Promise((resolve: any, reject: any) => {
