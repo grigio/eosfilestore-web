@@ -5,7 +5,7 @@ import { notificationStore } from '.';
 // interface
 
 class FileStore {
-  @observable transactions = []
+  @observable transactions: any = []
   @observable newTxid = ''
   @observable blob = ''
   @observable fileMetadata = {
@@ -28,9 +28,13 @@ class FileStore {
     this.isLoading = true
     this.isErrorState = false
     this.blob = ''
-    fetchTx(this.newTxid).then(({ data, fileMetadata }) => {
+    const context = this
+    function callback(tx: any) {
+      context.transactions.push(tx)
+    }
+    fetchTx(this.newTxid, callback).then(({ data, fileMetadata }) => {
       console.log('ddd', data)
-      this.blob = data.slice(9, )
+      this.blob = data.slice(9)
       this.isLoading = false
       this.fileMetadata = fileMetadata
       console.log('f', fileMetadata)
@@ -43,7 +47,7 @@ class FileStore {
     }).catch(e => {
       this.isLoading = false
       this.isErrorState = true
-      notificationStore.push({message: 'Error fetching tx via API'})
+      notificationStore.push({ message: 'Error fetching tx via API' })
       console.error('ERROR: ', e)
     })
   }
@@ -53,12 +57,10 @@ class FileStore {
     this.blob = ''
   }
 
-  @action setCounter(num: string) {
-    this.counter += Number(num)
-  }
-
-  @action increment() {
-    this.counter += 1
+  @action reset() {
+    this.blob = ''
+    this.newTxid = ''
+    this.transactions = []
   }
 
 }

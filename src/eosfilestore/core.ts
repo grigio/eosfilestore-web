@@ -50,7 +50,7 @@ export function doTx(memo: string, account: any): Promise<any> {
   })
 }
 
-export function fetchTx(txid: string, buffer?: string, fm?: any): Promise<any> {
+export function fetchTx(txid: string, callback: any, buffer?: string, fm?: any): Promise<any> {
   return new Promise((resolve: any, reject: any) => {
     eos.getTransaction(txid).then((data: any) => {
       const fmd = {
@@ -74,9 +74,9 @@ export function fetchTx(txid: string, buffer?: string, fm?: any): Promise<any> {
         upload_by: data.trx.trx.actions[0].authorization[0].actor
       }
       // debugger
-      console.log(`${memo.n}`) // verbose
+      callback(memo.n)
       if (memo.n) {
-        resolve(fetchTx(memo.n, `${buffer}${memo.c}`, fileMetadata))
+        resolve(fetchTx(memo.n, callback, `${buffer}${memo.c}`, fileMetadata))
       } else {
         resolve({ data: `${buffer}${memo.c}`, fileMetadata })
         // return false

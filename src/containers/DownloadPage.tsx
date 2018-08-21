@@ -18,6 +18,8 @@ class DownloadPage extends React.Component<any>{
     if (txid) {
       fileStore.setTxid(txid)
       fileStore.fetchData()
+    } else {
+      fileStore.reset()
     }
   }
 
@@ -83,6 +85,10 @@ class DownloadPage extends React.Component<any>{
                 <h2>
                   Fetching the file transactions
                 </h2>
+                {/* Maybe a component */}
+                {fileStore.transactions.map((t:any) => (
+                  <p key={t}>{t}</p>
+                ))}
                 <ProgressBar
                   animate={fileStore.isLoading}
                   value={100} />

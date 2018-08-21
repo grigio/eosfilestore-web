@@ -17,12 +17,8 @@ import { userStore } from '../stores';
 @observer
 class UploadPage extends React.Component<any>{
   componentDidMount() {
-    const txid = this.props.match.params.txid
-    // NOTE: auto fetch if the url provide txid
-    if (txid) {
-      fileStore.setTxid(txid)
-      fileStore.fetchData()
-    }
+    // just in case it comes from DownloadPage
+    fileStore.reset()
   }
 
   render() {
