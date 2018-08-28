@@ -196,6 +196,9 @@ export class App extends React.Component<any> {
                 <li>
                   <a href="https://www.producthunt.com/posts/eosfilestore">product hunt</a>
                 </li>
+                <li>
+                   v{`${process.env.REACT_APP_VERSION}`}
+                </li>
               </ul>
             </div>
             <div className="col-xs-12 col-sm">
