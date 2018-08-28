@@ -1,5 +1,8 @@
+import { maxPayloadSize } from './costants'
+
 // it splits the string in string chunks of a fixed size
-export function splitString(str: string, size: number): string[] {
+export function splitString(str: string, size?: number): string[] {
+  size = size || maxPayloadSize
   const re = new RegExp('.{1,' + size + '}', 'g')
   const matches = str.match(re) || []
   return matches

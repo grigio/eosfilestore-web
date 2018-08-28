@@ -57,7 +57,7 @@ class UploadPage extends React.Component<any>{
                       const fileB64 = arrayBufferToBase64(data.target.result, file.type)
                       // senza type
                       console.log(fileB64) // split and send
-                      fileStore.setBlob(fileB64)
+                      fileStore.setBlob(fileB64, true)
 
                       // bb
                       //   const chunks = splitString(fileB64, 1950)
@@ -125,6 +125,7 @@ class UploadPage extends React.Component<any>{
                   <div className="col-xs-8 start-xs">
                     Upload date: {fileStore.fileMetadata.block_time}<br />
                     Account: {fileStore.fileMetadata.upload_by}<br />
+                    Num txs: {fileStore.fileMetadata.num_txs}<br />
                     Total CPU: {fileStore.fileMetadata.cpu_usage_us}<br />
                     Total NET: {fileStore.fileMetadata.net_usage_words}<br />
                     Share <a href={`/download/${fileStore.newTxid}`}>direct link</a> <Icon icon="share" />

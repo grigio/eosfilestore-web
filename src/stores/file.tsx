@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx'
-import { fetchTx } from '../eosfilestore/core'
+import { fetchTx, estimateBlob } from '../eosfilestore/core'
 import { notificationStore } from '.';
 
 import { doTx } from '../eosfilestore/core'
@@ -18,6 +18,7 @@ class FileStore {
     block_time: '...',
     cpu_usage_us: '...',
     net_usage_words: '...',
+    num_txs: '...',
     upload_by: '...',
   }
   @observable isLoading = false
@@ -30,15 +31,25 @@ class FileStore {
     // async start here
   }
 
-  @action setBlob(blob: string) {
+  @action setBlob(blob: string, estimate?: boolean) {
     this.blob = blob
+    const estData = estimateBlob(blob)
+    if (estimate === true) {
+      this.fileMetadata = {
+        block_time: 'n/a',
+        cpu_usage_us: estData.cpu_usage_us,
+        net_usage_words: estData.net_usage_words,
+        num_txs: estData.num_txs,
+        upload_by: '...'
+      }
+    }
     // async start here
   }
 
   // NOTE: Upload should spin load until all tx uploaded
   @action async uploadFile() {
     const fileB64 = this.blob
-    const chunks = splitString(fileB64, 1950)
+    const chunks = splitString(fileB64)
     let nextTx: string | null = null
     let counter = 0
 

@@ -3,8 +3,8 @@
 // import mime from 'mime-types'
 // const Eos = require('eosjs')
 import * as Eos from 'eosjs'
-// import { splitString } from './utils'
-import { networkConfig } from './costants'
+import { splitString } from './utils'
+import { networkConfig, netPerTx, cpuPerTx } from './costants'
 
 const contractName = 'eosfilestore'
 /* tslint:disable */
@@ -48,6 +48,15 @@ export function doTx(memo: string, account: any): Promise<any> {
       })
     })
   })
+}
+
+export function estimateBlob(blob: string): any {
+  const chunks = splitString(blob)
+  return {
+    cpu_usage_us: `${cpuPerTx * chunks.length} μs (it depends on net congestion)`,
+    net_usage_words: `${netPerTx * chunks.length} bytes (${chunks.length} txs)`,
+    num_txs: chunks.length
+  }
 }
 
 export function fetchTx(txid: string, callback: any, buffer?: string, fm?: any): Promise<any> {
