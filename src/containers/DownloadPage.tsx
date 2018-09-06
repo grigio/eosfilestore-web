@@ -9,6 +9,7 @@ import { fileStore } from '../stores';
 // a jpg 90edc50fac5a622820404e24f6839c7b9ca2bff73a3b1a11221caf85334aa6e6
 // sh 987c4c9995e717df08ce82f4b24a2f814749f92113e7458124f29607cad0b77d
 // welcome txt 9a9e4d3637cbecea36d7cf54d0cf8a7e8046f0b893a1d880800ec8312c7d9eb4
+// HTML ef9445d69c8fe0e435ae01573422fc7aa2f62f81fe5e840c7ce90b131a027e13
 
 @observer
 class DownloadPage extends React.Component<any>{
@@ -86,7 +87,7 @@ class DownloadPage extends React.Component<any>{
                   Fetching the file transactions
                 </h2>
                 {/* Maybe a component */}
-                {fileStore.transactions.map((t:any) => (
+                {fileStore.transactions.map((t: any) => (
                   <p key={t}>{t}</p>
                 ))}
                 <ProgressBar
@@ -139,6 +140,14 @@ class DownloadPage extends React.Component<any>{
                   <div className="previewer row start-xs">
                     <div className="col-xs start-xs">
                       <img style={{ width: '100%' }} src={`${fileStore.blob}`} alt="" />
+                    </div>
+                  </div>
+                ) : null}
+
+                {fileStore.blob.slice(0, 9) === "data:text" ? (
+                  <div className="previewer row start-xs">
+                    <div className="col-xs start-xs">
+                      <iframe style={{ width: '100%' }} src={`${fileStore.blob}`} />
                     </div>
                   </div>
                 ) : null}
