@@ -169,6 +169,7 @@ class DownloadPage extends React.Component<any>{
   }
 
   private onTxidChange(ev: any) {
+    fileStore.reset()
     fileStore.setTxid(ev.target.value)
   }
 
